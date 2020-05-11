@@ -9,7 +9,8 @@ class Chatter extends React.Component {
     }
 
     receiveResponse(prompt, next) {
-        this.props.onReceivedMessage(prompt + " --- " + next);
+        this.props.onReceivedMessage("message", prompt)
+        this.props.onReceivedMessage("next", next)
     }
 
     submit = () => {
@@ -48,11 +49,24 @@ class Responder extends React.Component {
     constructor(prop) {
         super(prop);
     }
+
+    renderInfo(messageListRaw) {
+        return messageListRaw.messageList.map(raw => {
+            return(
+                <tr><td>{raw}</td></tr>
+            )
+        })
+    }
+
     render() {
         if(this.props.willRenderMessage.length === 0) {
             return <h1> I am RESPONSER!</h1>
         } else {
-            return <h2> {this.props.willRenderMessage} </h2>
+            return <table>
+                <tbody>
+                    {this.renderInfo(this.props.willRenderMessage)}
+                </tbody>
+            </table>
         }
     }
 }
@@ -60,12 +74,13 @@ class Responder extends React.Component {
 class App extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {messageList : []}
+        this.state = {messageList : [], messageType : []}
     }
 
-    renderResponse(message) {
+    renderResponse(messageType, message) {
         this.setState(prevState => ({
-            messageList: [...prevState.messageList, message]
+            messageList: [...prevState.messageList, message],
+            messageType: [...prevState.messageType, messageType]
         }))
     }
 
@@ -73,7 +88,7 @@ class App extends React.Component {
         return (
             <div className="App">
                 <Chatter onReceivedMessage={this.renderResponse.bind(this)}/>
-                <Responder willRenderMessage={this.state.messageList}/>
+                <Responder willRenderMessage={this.state}/>
             </div>
         );
     }
