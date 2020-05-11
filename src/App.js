@@ -53,7 +53,7 @@ class Responder extends React.Component {
     renderInfo(messageListRaw) {
         return messageListRaw.messageList.map(raw => {
             return(
-                <tr><td>{raw}</td></tr>
+                <li>{raw}</li>
             )
         })
     }
@@ -62,11 +62,9 @@ class Responder extends React.Component {
         if(this.props.willRenderMessage.length === 0) {
             return <h1> I am RESPONSER!</h1>
         } else {
-            return <table>
-                <tbody>
+            return <ul>
                     {this.renderInfo(this.props.willRenderMessage)}
-                </tbody>
-            </table>
+                </ul>
         }
     }
 }
